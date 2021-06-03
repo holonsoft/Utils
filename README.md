@@ -1,2 +1,2 @@
 # Utils
-Utility functions for our other projects
+Utility functions for other projects of holonsoft
