@@ -569,36 +569,36 @@ namespace holonsoft.Utils.Extensions
 		/// </summary>
 		/// <param name="self">string to be inspected</param>
 		/// <returns>Tuple(bool, string) with check and additional info</returns>
-		public static Tuple<bool, string> IsFormalValidIBAN(this string self)
+		public static (bool IsValid, string ErrorMsg) IsFormalValidIBAN(this string self)
 		{
-			if (String.IsNullOrWhiteSpace(self))
+			if (string.IsNullOrWhiteSpace(self))
 			{
-				return new Tuple<bool, string>(false, "Invalid IBAN string value");
+				return (false, "Invalid IBAN string value");
 			}
 
 			var result = self.Replace(" ", "");
 
 			try
 			{
-				var isvalid = _regExprIBAN.IsMatch(result);
+				var isValid = _regExprIBAN.IsMatch(result);
 
-				if (!isvalid)
+				if (!isValid)
 				{
-					return new Tuple<bool, string>(false, "Formal NOT OK - chars don't match");
+					return (false, "Formal NOT OK - chars don't match");
 				}
 
 				var countryCode = result.Substring(0, 2);
 
 				if (!IBANCountryInfo.IBANCountryList.ContainsKey(countryCode))
 				{
-					return new Tuple<bool, string>(false, "Formal NOT OK - country not supported");
+					return (false, "Formal NOT OK - country not supported");
 				}
 
 				var countryInfo = IBANCountryInfo.IBANCountryList[countryCode];
 
 				if (result.Length != countryInfo.IBANLength)
 				{
-					return new Tuple<bool, string>(false, "Formal NOT OK - length doesn't match country specification");
+					return (false, "Formal NOT OK - length doesn't match country specification");
 				}
 
 				var checkSum = result.Substring(2, 2);
@@ -612,21 +612,21 @@ namespace holonsoft.Utils.Extensions
 
 				if (!BigInteger.TryParse(ciphers, out x))
 				{
-					return new Tuple<bool, string>(false, "Formal NOT OK - transformation to number failed");
+					return (false, "Formal NOT OK - transformation to number failed");
 				}
 
 				if ((x % 97) != 1)
 				{
-					return new Tuple<bool, string>(false, "Formal NOT OK - checksum does not match");
+					return (false, "Formal NOT OK - checksum does not match");
 				}
 
-				return new Tuple<bool, string>(true, "Formal OK");
+				return (true, "Formal OK");
 			}
 			catch (Exception)
 			{
 			}
 
-			return new Tuple<bool, string>(false, "Formal NOT OK - unknown error");
+			return (false, "Formal NOT OK - unknown error");
 		}
 
 

@@ -5,7 +5,7 @@ namespace holonsoft.Utils.Extensions
 {
 	public static class ExceptionExtension
 	{
-		public static string FlattenMessages(this Exception exception)
+		public static string Flatten(this Exception exception)
 		{
 			StringBuilder builder = new();
 			while (exception != null)
@@ -16,15 +16,6 @@ namespace holonsoft.Utils.Extensions
 			return builder.ToString();
 		}
 
-		public static string Flatten(this Exception exception)
-		{
-			StringBuilder builder = new();
-			while (exception != null)
-			{
-				builder.AppendLine(exception.ToString());
-				exception = exception.InnerException;
-			}
-			return builder.ToString();
-		}
+		
 	}
 }

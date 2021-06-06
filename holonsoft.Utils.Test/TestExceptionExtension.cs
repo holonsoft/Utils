@@ -20,7 +20,7 @@ namespace holonsoft.Utils.Test
 		    var exOuter = new ExecutionEngineException(dummyOuter, exInner);
 #pragma warning restore 612, 618
 
-		    var msg = exOuter.FlattenMessages();
+		    var msg = exOuter.Flatten();
 
 		    Assert.Equal("Dummy outer exception\r\nDummy inner exception\r\nDummy inner inner exception\r\n", msg);
 	    }
