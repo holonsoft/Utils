@@ -1,9 +1,13 @@
 # Utils
 Utility functions for other projects of holonsoft
 
-## Assembly extensions
+## ReflectionUtils
+Cached access to types. Loads all assemblies from disk so it really looks in >all< assemblies.
 
-  public static Type SearchType(string typeToSearch)
+  public static Type FindTypeByNameInAnyAssembly(string typeName)
+  public static Type FindTypeByNameInAnyNonDynamicAssembly(string typeName)
+  public static Type FindTypeByNameInAnyDynamicAssembly(string typeName)
+
 
 ## CancellationTokenExtension
 

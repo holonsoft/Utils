@@ -32,13 +32,7 @@ namespace holonsoft.Utils.Extensions
 		/// <summary>
 		/// Regular expression to test, whether a string is a valid GUID or not
 		/// </summary>
-		private static readonly Regex _regExprGuid = new Regex(@"^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$", RegexOptions.Compiled);
-
-
-		/// <summary>
-		/// Regular expression to test, whether a string is a formal valid email address
-		/// </summary>
-		private static string _emailRegExprLeniant = @"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*";
+		private static readonly Regex _regExprGuid = new(@"^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$", RegexOptions.Compiled);
 
 		/// <summary>
 		/// Regular expression to test, whether a string is a formal valid email address
@@ -49,13 +43,13 @@ namespace holonsoft.Utils.Extensions
 		/// <summary>
 		/// Regular expression to test, whether a string is a formal(!) valid IBAN or not
 		/// </summary>
-		private static readonly Regex _regExprIBAN = new Regex(@"[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}", RegexOptions.Compiled);
+		private static readonly Regex _regExprIBAN = new(@"[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}", RegexOptions.Compiled);
 
 
 		/// <summary>
 		/// Regular expression to test, whether a string is a formal valid email address
 		/// </summary>
-		private static readonly Regex _regExprEmail = new Regex(_emailRegExprStrict, RegexOptions.Compiled);
+		private static readonly Regex _regExprEmail = new(_emailRegExprStrict, RegexOptions.Compiled);
 
 		static readonly char[] _guidBrackets = new char[] { '{', '}' };
 
@@ -90,7 +84,7 @@ namespace holonsoft.Utils.Extensions
 			}
 
 
-			var replaceHelper = "";
+			string replaceHelper;
 
 			switch (newStringFormat)
 			{
@@ -105,7 +99,7 @@ namespace holonsoft.Utils.Extensions
 					{
 						if (i > 0)
 						{
-							resultBuilder.Append(" ");
+							resultBuilder.Append(' ');
 						}
 
 						if (!ignoreValueList.Contains(stringHelperArray[i].ToLower().Trim(new[] { '(', ')' })))
@@ -353,7 +347,7 @@ namespace holonsoft.Utils.Extensions
 			// Is there a rest to be copied?
 			if (start < length)
 			{
-				result.Add(self.Substring(start));
+				result.Add(self[start..]);
 			}
 
 			return result;
@@ -370,13 +364,11 @@ namespace holonsoft.Utils.Extensions
 		{
 			if (allowDecimals)
 			{
-				double dummy;
-				return Double.TryParse(self, out dummy);
+				return Double.TryParse(self, out _);
 			}
 			else
 			{
-				int dummy;
-				return Int32.TryParse(self, out dummy);
+				return Int32.TryParse(self, out _);
 			}
 		}
 
@@ -424,7 +416,7 @@ namespace holonsoft.Utils.Extensions
 				result.Append(Convert.ToString(c, 16));
 				if (addBlanks)
 				{
-					result.Append(" ");
+					result.Append(' ');
 				}
 			}
 
@@ -489,7 +481,7 @@ namespace holonsoft.Utils.Extensions
 
 		public static string Right(this string self, int length)
 		{
-			return self.Substring(self.Length - length);
+			return self[^length..];
 		}
 
 
@@ -552,7 +544,7 @@ namespace holonsoft.Utils.Extensions
 		{
 			if (string.IsNullOrWhiteSpace(self))
 			{
-				return default(T);
+				return default;
 			}
 
 			if (typeof(T).IsEnum)
@@ -608,9 +600,8 @@ namespace holonsoft.Utils.Extensions
 
 				ciphers += countryCodeValue + checkSum;
 
-				BigInteger x;
 
-				if (!BigInteger.TryParse(ciphers, out x))
+				if (!BigInteger.TryParse(ciphers, out BigInteger x))
 				{
 					return (false, "Formal NOT OK - transformation to number failed");
 				}
@@ -634,7 +625,7 @@ namespace holonsoft.Utils.Extensions
 		{
 			if (checkValidity)
 			{
-				if (!IsFormalValidIBAN(self).Item1)
+				if (!IsFormalValidIBAN(self).IsValid)
 				{
 					return null;
 				}
@@ -668,7 +659,7 @@ namespace holonsoft.Utils.Extensions
 
 			if (checkValidity)
 			{
-				if (!IsFormalValidIBAN(intermediateResult).Item1)
+				if (!IsFormalValidIBAN(intermediateResult).IsValid)
 				{
 					return null;
 				}

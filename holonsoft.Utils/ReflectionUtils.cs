@@ -106,10 +106,24 @@ namespace holonsoft.Utils
 						.GetFiles(Path.GetDirectoryName(entryAssembly.Location))
 						.Where(ReflectionUtils.IsAssembly)
 						.Select(ReflectionUtils.LoadAssemblyOrNull)
-						.Where(x => x != null));
+						.Where(x => x != null)
+						.Where(x => !x.IsDynamic));
 
 			_allAssemblies = allAssemblies;
 			return _allAssemblies;
+		}
+
+		private static Dictionary<string, Type> _allTypes;
+		public static Dictionary<string, Type> AllTypes => _allTypes ?? GenerateAllTypes();
+
+		private static Dictionary<string, Type> GenerateAllTypes()
+		{
+			_allTypes =
+				 AllAssemblies
+						.SelectMany(x => x.GetTypes())
+						.DistinctBy(x => x.FullName)
+						.ToDictionary(x => x.FullName);
+			return _allTypes;
 		}
 
 		private static Dictionary<string, Type> _allNonAbstractTypes;
@@ -118,15 +132,26 @@ namespace holonsoft.Utils
 		private static Dictionary<string, Type> GenerateAllNonAbstractTypes()
 		{
 			_allNonAbstractTypes =
-				 AllAssemblies
-						.SelectMany(x => x.GetTypes())
-						.Where(x => !x.IsInterface && !x.IsAbstract)
-						.DistinctBy(x => x.FullName)
-						.ToDictionary(x => x.FullName);
+				 AllTypes
+						.Where(x => !x.Value.IsInterface && !x.Value.IsAbstract)
+						.ToDictionary(x => x.Key, x => x.Value);
 			return _allNonAbstractTypes;
 		}
 
 
+		/// <summary>
+		/// Looks in all loaded - dynamic - assemblies for the given type.
+		/// </summary>
+		/// <param name="typeName">The fullname of the type.</param>
+		/// <returns>The <see cref="Type"/> found; null if not found.</returns>
+		public static Type FindTypeByNameInAnyDynamicAssembly(string typeName)
+		{
+			return AppDomain.CurrentDomain
+											.GetAssemblies()
+											.Where(x => x.IsDynamic)
+											.SelectMany(x => x.GetTypes())
+											.FirstOrDefault(x => x.FullName == typeName);
+		}
 
 		/// <summary>
 		/// Looks in all loaded - non dynamic - assemblies for the given type.
@@ -135,10 +160,9 @@ namespace holonsoft.Utils
 		/// <returns>The <see cref="Type"/> found; null if not found.</returns>
 		public static Type FindTypeByNameInAnyNonDynamicAssembly(string typeName)
 		{
-			return AppDomain.CurrentDomain.GetAssemblies()
-											.Where(a => !a.IsDynamic)
-											.SelectMany(a => a.GetTypes())
-											.FirstOrDefault(t => t.Name.Equals(typeName) || t.FullName.Equals(typeName));
+			if (AllTypes.TryGetValue(typeName, out Type result))
+				return result;
+			return null;
 		}
 
 
@@ -149,38 +173,7 @@ namespace holonsoft.Utils
 		/// <returns>The <see cref="Type"/> found; null if not found.</returns>
 		public static Type FindTypeByNameInAnyAssembly(string typeName)
 		{
-			return AppDomain.CurrentDomain.GetAssemblies()
-											.SelectMany(a => a.GetTypes())
-											.FirstOrDefault(t => t.Name.Equals(typeName) || t.FullName.Equals(typeName));
+			return FindTypeByNameInAnyNonDynamicAssembly(typeName) ?? FindTypeByNameInAnyDynamicAssembly(typeName);
 		}
-
-
-		/// <summary>
-		/// Looks in all loaded assemblies (including dynamic assemblies) for the given type.
-		/// If just a name is provided the result may contain more than one value
-		/// </summary>
-		/// <param name="typeName">The name or fullname of the type.</param>
-		/// <returns>The <see cref="IEnumerable<>"/> found; empty enumeration if not found.</returns>
-		public static IEnumerable<Type> FindAllTypesByNameInAnyAssembly(string typeName)
-		{
-			return AppDomain.CurrentDomain.GetAssemblies()
-											.SelectMany(a => a.GetTypes()
-											.Where(t => t.Name.Equals(typeName) || t.FullName.Equals(typeName)));
-		}
-
-		/// <summary>
-		/// Looks in all loaded - non dynamic - assemblies for the given type.
-		/// If just a name is provided the result may contain more than one value
-		/// </summary>
-		/// <param name="typeName">The name or fullname of the type.</param>
-		/// <returns>The <see cref="IEnumerable<>"/> found; empty enumeration if not found.</returns>
-		public static IEnumerable<Type> FindAllTypesByNameInAnyNonDynamicAssembly(string typeName)
-		{
-			return AppDomain.CurrentDomain.GetAssemblies()
-											.Where(a => !a.IsDynamic)
-											.SelectMany(a => a.GetTypes()
-											.Where(t => t.Name.Equals(typeName) || t.FullName.Equals(typeName)));
-		}
-
 	}
 }

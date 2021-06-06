@@ -246,10 +246,10 @@ namespace holonsoft.Utils.Test
 		public void TestIsFormalValidIBAN()
 		{
 			var source = "DE68 2105 0170 0012 3456 78";
-			Assert.True(source.IsFormalValidIBAN().Item1);
+			Assert.True(source.IsFormalValidIBAN().IsValid);
 
 			source = "DE19323412341234123412"; // invalid iban
-			Assert.False(source.IsFormalValidIBAN().Item1);
+			Assert.False(source.IsFormalValidIBAN().IsValid);
 		}
 
 
@@ -260,7 +260,7 @@ namespace holonsoft.Utils.Test
 			Assert.Equal("DE68 2105 0170 0012 3456 78", source.FormatAsPrintableIBAN());
 
 			source = "DE12123412341234123412";// invalid iban
-			Assert.Equal(null, source.FormatAsPrintableIBAN());
+			Assert.Null(source.FormatAsPrintableIBAN());
 
 		}
 
@@ -290,7 +290,7 @@ namespace holonsoft.Utils.Test
 			Assert.Equal(1, "1".GetAs<int>());
 			Assert.Equal(1, "1".GetAs<Int32>());
 			Assert.Equal(Int64.MaxValue, "9223372036854775807".GetAs<Int64>());
-			Assert.Equal(true, "true".GetAs<bool>());
+			Assert.True("true".GetAs<bool>());
 			Assert.Equal(1.0m, "1.0".GetAs<decimal>());
 			Assert.Equal(1.0, "1.0".GetAs<double>());
 			Assert.Equal(new DateTime(2016, 1, 1), "2016-01-01".GetAs<DateTime>());
@@ -304,7 +304,8 @@ namespace holonsoft.Utils.Test
 			Assert.Equal(1, "1".GetAs<int>(CultureInfo.GetCultureInfo("de-DE")));
 			Assert.Equal(1, "1".GetAs<Int32>(CultureInfo.GetCultureInfo("de-DE")));
 			Assert.Equal(Int64.MaxValue, "9223372036854775807".GetAs<Int64>(CultureInfo.GetCultureInfo("de-DE")));
-			Assert.Equal(true, "true".GetAs<bool>(CultureInfo.GetCultureInfo("de-DE")));
+
+			Assert.True("true".GetAs<bool>(CultureInfo.GetCultureInfo("de-DE")));
 			Assert.Equal(1.0m, "1,0".GetAs<decimal>(CultureInfo.GetCultureInfo("de-DE")));
 			Assert.Equal(1.0, "1,0".GetAs<double>(CultureInfo.GetCultureInfo("de-DE")));
 			Assert.Equal(new DateTime(2016, 1, 1), "01.01.2016".GetAs<DateTime>(CultureInfo.GetCultureInfo("de-DE")));
