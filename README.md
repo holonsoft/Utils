@@ -21,7 +21,10 @@ public static T GetValue<T>(Type typeOfValue, string value, CultureInfo culture)
 public static T GetValue<T>(string typeOfValue, string value, CultureInfo culture)
   
 ## ExceptionExtension
-public static string Flatten(this Exception exception)
+
+  public static string Flatten(this Exception exception)
   
-  
+## IPAddressExtension
+
+
   
