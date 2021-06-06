@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
 
-namespace holonsoft.Utils
+namespace holonsoft.Utils.Extensions
 {
-	public static class ExceptionHelper
+	public static class ExceptionExtension
 	{
 		public static string FlattenMessages(this Exception exception)
 		{

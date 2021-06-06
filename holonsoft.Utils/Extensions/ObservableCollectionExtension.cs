@@ -2,9 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace holonsoft.Utils
+namespace holonsoft.Utils.Extensions
 {
-	public static class ObservableCollectionHelper
+	public static class ObservableCollectionExtension
 	{
 		public static void Sort<T, TKey>(this ObservableCollection<T> collection, Func<T, TKey> keySelector)
 		{

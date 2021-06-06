@@ -1,4 +1,5 @@
-﻿using System;
+﻿using holonsoft.Utils.Extensions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -124,5 +125,62 @@ namespace holonsoft.Utils
 						.ToDictionary(x => x.FullName);
 			return _allNonAbstractTypes;
 		}
+
+
+
+		/// <summary>
+		/// Looks in all loaded - non dynamic - assemblies for the given type.
+		/// </summary>
+		/// <param name="typeName">The name or fullname of the type.</param>
+		/// <returns>The <see cref="Type"/> found; null if not found.</returns>
+		public static Type FindTypeByNameInAnyNonDynamicAssembly(string typeName)
+		{
+			return AppDomain.CurrentDomain.GetAssemblies()
+											.Where(a => !a.IsDynamic)
+											.SelectMany(a => a.GetTypes())
+											.FirstOrDefault(t => t.Name.Equals(typeName) || t.FullName.Equals(typeName));
+		}
+
+
+		/// <summary>
+		/// Looks in all loaded assemblies (including dynamic assemblies) for the given type.
+		/// </summary>
+		/// <param name="typeName">The name or fullname of the type.</param>
+		/// <returns>The <see cref="Type"/> found; null if not found.</returns>
+		public static Type FindTypeByNameInAnyAssembly(string typeName)
+		{
+			return AppDomain.CurrentDomain.GetAssemblies()
+											.SelectMany(a => a.GetTypes())
+											.FirstOrDefault(t => t.Name.Equals(typeName) || t.FullName.Equals(typeName));
+		}
+
+
+		/// <summary>
+		/// Looks in all loaded assemblies (including dynamic assemblies) for the given type.
+		/// If just a name is provided the result may contain more than one value
+		/// </summary>
+		/// <param name="typeName">The name or fullname of the type.</param>
+		/// <returns>The <see cref="IEnumerable<>"/> found; empty enumeration if not found.</returns>
+		public static IEnumerable<Type> FindAllTypesByNameInAnyAssembly(string typeName)
+		{
+			return AppDomain.CurrentDomain.GetAssemblies()
+											.SelectMany(a => a.GetTypes()
+											.Where(t => t.Name.Equals(typeName) || t.FullName.Equals(typeName)));
+		}
+
+		/// <summary>
+		/// Looks in all loaded - non dynamic - assemblies for the given type.
+		/// If just a name is provided the result may contain more than one value
+		/// </summary>
+		/// <param name="typeName">The name or fullname of the type.</param>
+		/// <returns>The <see cref="IEnumerable<>"/> found; empty enumeration if not found.</returns>
+		public static IEnumerable<Type> FindAllTypesByNameInAnyNonDynamicAssembly(string typeName)
+		{
+			return AppDomain.CurrentDomain.GetAssemblies()
+											.Where(a => !a.IsDynamic)
+											.SelectMany(a => a.GetTypes()
+											.Where(t => t.Name.Equals(typeName) || t.FullName.Equals(typeName)));
+		}
+
 	}
 }

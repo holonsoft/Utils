@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace holonsoft.Utils
+namespace holonsoft.Utils.Extensions
 {
-	public static class CancellationTokenHelper
+	public static class CancellationTokenExtension
 	{
 		public static Task AsAwaitable(this CancellationToken cancellationToken)
 		{

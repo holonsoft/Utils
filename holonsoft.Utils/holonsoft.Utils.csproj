@@ -6,16 +6,16 @@
     <PackageProjectUrl>https://www.nuget.org/packages/holonsoft.Utils/</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Copyright>holonsoft</Copyright>
-    <Description>
-      Utilities that are used in other holonsoft projects.
-    </Description>
+    <Description>Utilities (mosty extension methods) that are used in other holonsoft projects.
+</Description>
     <RepositoryUrl>https://github.com/holonsoft/Utils</RepositoryUrl>
-    <Version>1.0.0.1</Version>
+    <Version>1.4.1.1</Version>
     <TargetFrameworks>net5.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryType>GIT</RepositoryType>
     <PackageId>holonsoft.Utils</PackageId>
+    <PackageTags>#holonsoft#utils#net5#netcore3.1#netcoreapp3.1#net472#net48#netstandard2.0</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +23,10 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dto\" />
   </ItemGroup>
 
 </Project>
