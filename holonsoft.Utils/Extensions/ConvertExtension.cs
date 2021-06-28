@@ -35,7 +35,8 @@ namespace holonsoft.Utils.Extensions
 		/// <returns></returns>
 		public static T GetValue<T>(string typeOfValue, string value, CultureInfo culture)
 		{
-			return GetValue<T>(ReflectionUtils.FindTypeByNameInAnyNonDynamicAssembly(typeOfValue), value, culture);
+			//return GetValue<T>(ReflectionUtils.FindTypeByNameInAnyNonDynamicAssembly(typeOfValue), value, culture);
+			return GetValue<T>(ReflectionUtils.SearchType(typeOfValue), value, culture);
 		}
 
 

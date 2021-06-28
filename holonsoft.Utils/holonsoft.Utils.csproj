@@ -9,13 +9,13 @@
     <Description>Utilities (mosty extension methods) that are used in other holonsoft projects.
 </Description>
     <RepositoryUrl>https://github.com/holonsoft/Utils</RepositoryUrl>
-    <Version>1.4.1.2</Version>
-    <TargetFrameworks>net5.0</TargetFrameworks>
+    <Version>1.5.1.1</Version>
+    <TargetFrameworks>netcoreapp3.1;net5.0;netstandard2.1</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryType>GIT</RepositoryType>
     <PackageId>holonsoft.Utils</PackageId>
-    <PackageTags>#holonsoft#utils#net5#netcore3.1#netcoreapp3.1#net472#net48#netstandard2.0</PackageTags>
+    <PackageTags>#holonsoft#utils#net5#netcore3.1#netstandard2.1</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

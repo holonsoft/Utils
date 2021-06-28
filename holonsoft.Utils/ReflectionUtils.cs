@@ -20,6 +20,7 @@ namespace holonsoft.Utils
 			catch (BadImageFormatException)
 			{
 			}
+
 			return false;
 		}
 
@@ -36,6 +37,7 @@ namespace holonsoft.Utils
 				{
 				}
 			}
+
 			return null;
 		}
 
@@ -48,6 +50,7 @@ namespace holonsoft.Utils
 			catch (Exception)
 			{
 			}
+
 			return null;
 		}
 
@@ -57,14 +60,17 @@ namespace holonsoft.Utils
 			{
 				throw new ArgumentNullException(nameof(propertyExpression));
 			}
+
 			if (propertyExpression.Body is not MemberExpression body)
 			{
 				throw new ArgumentException("Invalid argument", nameof(propertyExpression));
 			}
+
 			if (body.Member is not PropertyInfo member)
 			{
 				throw new ArgumentException("Argument is not a property", nameof(propertyExpression));
 			}
+
 			return member.Name;
 		}
 
@@ -82,11 +88,11 @@ namespace holonsoft.Utils
 				allAssemblies.Add(assembly);
 
 				Assembly[] referencedAssemblies =
-					 assembly
-							.GetReferencedAssemblies()
-							.Select(LoadAssemblyOrNull)
-							.Where(x => x != null && !allAssemblies.Contains(x))
-							.ToArray();
+					assembly
+						.GetReferencedAssemblies()
+						.Select(LoadAssemblyOrNull)
+						.Where(x => x != null && !allAssemblies.Contains(x))
+						.ToArray();
 
 				foreach (var referencedAssembly in referencedAssemblies)
 				{
@@ -102,12 +108,12 @@ namespace holonsoft.Utils
 			DescendAssemblies(entryAssembly);
 
 			allAssemblies.UnionWith(
-				 Directory
-						.GetFiles(Path.GetDirectoryName(entryAssembly.Location))
-						.Where(ReflectionUtils.IsAssembly)
-						.Select(ReflectionUtils.LoadAssemblyOrNull)
-						.Where(x => x != null)
-						.Where(x => !x.IsDynamic));
+				Directory
+					.GetFiles(Path.GetDirectoryName(entryAssembly.Location))
+					.Where(ReflectionUtils.IsAssembly)
+					.Select(ReflectionUtils.LoadAssemblyOrNull)
+					.Where(x => x != null)
+					.Where(x => !x.IsDynamic));
 
 			_allAssemblies = allAssemblies;
 			return _allAssemblies;
@@ -119,10 +125,10 @@ namespace holonsoft.Utils
 		private static Dictionary<string, Type> GenerateAllTypes()
 		{
 			_allTypes =
-				 AllAssemblies
-						.SelectMany(x => x.GetTypes())
-						.DistinctBy(x => x.FullName)
-						.ToDictionary(x => x.FullName);
+				AllAssemblies
+					.SelectMany(x => x.GetTypes())
+					.DistinctBy(x => x.FullName)
+					.ToDictionary(x => x.FullName);
 			return _allTypes;
 		}
 
@@ -132,9 +138,9 @@ namespace holonsoft.Utils
 		private static Dictionary<string, Type> GenerateAllNonAbstractTypes()
 		{
 			_allNonAbstractTypes =
-				 AllTypes
-						.Where(x => !x.Value.IsInterface && !x.Value.IsAbstract)
-						.ToDictionary(x => x.Key, x => x.Value);
+				AllTypes
+					.Where(x => !x.Value.IsInterface && !x.Value.IsAbstract)
+					.ToDictionary(x => x.Key, x => x.Value);
 			return _allNonAbstractTypes;
 		}
 
@@ -147,10 +153,10 @@ namespace holonsoft.Utils
 		public static Type FindTypeByNameInAnyDynamicAssembly(string typeName)
 		{
 			return AppDomain.CurrentDomain
-											.GetAssemblies()
-											.Where(x => x.IsDynamic)
-											.SelectMany(x => x.GetTypes())
-											.FirstOrDefault(x => x.FullName == typeName);
+				.GetAssemblies()
+				.Where(x => x.IsDynamic)
+				.SelectMany(x => x.GetTypes())
+				.FirstOrDefault(x => x.FullName == typeName);
 		}
 
 		/// <summary>
@@ -174,6 +180,25 @@ namespace holonsoft.Utils
 		public static Type FindTypeByNameInAnyAssembly(string typeName)
 		{
 			return FindTypeByNameInAnyNonDynamicAssembly(typeName) ?? FindTypeByNameInAnyDynamicAssembly(typeName);
+		}
+
+
+		/// <summary>
+		/// Search a type in all assemblies
+		/// </summary>
+		/// <param name="typeToSearch"></param>
+		/// <returns></returns>
+		public static Type SearchType(string typeToSearch)
+		{
+			var x = Type.GetType(typeToSearch);
+
+			if (x != null) return x;
+
+			var types = from a in AppDomain.CurrentDomain.GetAssemblies()
+				from t in a.GetTypes()
+				select t;
+
+			return types.FirstOrDefault(type => type.FullName == typeToSearch);
 		}
 	}
 }
