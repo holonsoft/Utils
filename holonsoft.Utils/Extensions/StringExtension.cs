@@ -445,7 +445,8 @@ namespace holonsoft.Utils.Extensions
 		{
 			byte[] inputBytes = System.Text.Encoding.Default.GetBytes(self);
 
-			var md5CryptoServiceProvider = new MD5CryptoServiceProvider();
+			var md5CryptoServiceProvider = MD5.Create();
+			
 			var hash = md5CryptoServiceProvider.ComputeHash(inputBytes);
 
 			var result = new StringBuilder();
