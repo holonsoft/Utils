@@ -8,7 +8,7 @@
     <Copyright>holonsoft</Copyright>
     <Description>Utilities (mosty extension methods) that are used in other holonsoft projects.</Description>
     <RepositoryUrl>https://github.com/holonsoft/Utils</RepositoryUrl>
-    <Version>1.6.2</Version>
+    <Version>1.6.3</Version>
     <TargetFrameworks>net6.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

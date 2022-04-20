@@ -1,5 +1,4 @@
-﻿using holonsoft.Utils.Extensions;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Reflection;
 
 namespace holonsoft.Utils;
@@ -67,7 +66,8 @@ public static class ReflectionUtils
   //Common.TypeScanning
 
   private static HashSet<Assembly> _allAssemblies;
-  public static HashSet<Assembly> AllAssemblies => _allAssemblies ?? GenerateAllAssemblies();
+  public static HashSet<Assembly> AllAssemblies
+    => _allAssemblies ?? GenerateAllAssemblies();
 
   private static HashSet<Assembly> GenerateAllAssemblies()
   {
@@ -110,7 +110,8 @@ public static class ReflectionUtils
   }
 
   private static Dictionary<string, Type> _allTypes;
-  public static Dictionary<string, Type> AllTypes => _allTypes ?? GenerateAllTypes();
+  public static Dictionary<string, Type> AllTypes
+    => _allTypes ?? GenerateAllTypes();
 
   private static Dictionary<string, Type> GenerateAllTypes()
   {
@@ -167,7 +168,8 @@ public static class ReflectionUtils
   /// </summary>
   /// <param name="typeName">The name or fullname of the type.</param>
   /// <returns>The <see cref="Type"/> found; null if not found.</returns>
-  public static Type FindTypeByNameInAnyAssembly(string typeName) => FindTypeByNameInAnyNonDynamicAssembly(typeName) ?? FindTypeByNameInAnyDynamicAssembly(typeName);
+  public static Type FindTypeByNameInAnyAssembly(string typeName)
+    => FindTypeByNameInAnyNonDynamicAssembly(typeName) ?? FindTypeByNameInAnyDynamicAssembly(typeName);
 
   public static Type[] GetTypesDontThrow(this Assembly assembly)
   {
