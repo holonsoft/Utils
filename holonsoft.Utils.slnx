@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="holonsoft.Utils.Test/holonsoft.Utils.Test.csproj" />
+  <Project Path="holonsoft.Utils/holonsoft.Utils.csproj" />
+</Solution>
