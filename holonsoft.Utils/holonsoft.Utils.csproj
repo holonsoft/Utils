@@ -1,22 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Authors>Alexander Bülow, Christian Vogt</Authors>
+    <Authors>Christian Vogt</Authors>
     <Company>holonsoft</Company>
     <PackageProjectUrl>https://www.nuget.org/packages/holonsoft.Utils/</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Copyright>holonsoft</Copyright>
     <Description>Utilities (mosty extension methods) that are used in other holonsoft projects.</Description>
     <RepositoryUrl>https://github.com/holonsoft/Utils</RepositoryUrl>
-    <Version>1.6.3</Version>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <Version>1.10.1</Version>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <ImplicitUsings>enable</ImplicitUsings>
     <DebugType>Embedded</DebugType>
     <RepositoryType>GIT</RepositoryType>
     <PackageId>holonsoft.Utils</PackageId>
-    <PackageTags>holonsoft;utils;net6</PackageTags>
+    <PackageTags>holonsoft;utils;net8;net9;net10</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
